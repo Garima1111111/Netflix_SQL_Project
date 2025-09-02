@@ -64,3 +64,18 @@ SELECT type, COUNT(show_id) AS Count
 FROM netflix
 GROUP BY type;
 
+### **Categorize the content based on the presence of the keywords 'kill' and 'violence' in 
+--the description field. Label content containing these keywords as 'Bad' and all other 
+--content as 'Good'. Count how many items fall into each category**.
+```sql
+SELECT 
+  CASE
+    WHEN description like '%kill%' or description like '%voilence%' THEN 'bad'
+    ELSE 'good'
+  END AS goodorbad,
+  count(*) as movie_count
+FROM netflix
+group by goodorbad;
+
+select count(*) from netflix where goodorbad = 'bad'
+
