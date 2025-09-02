@@ -14,7 +14,7 @@ The aim was to practice **SQL for Data Analytics** and extract meaningful insigh
 
 ---
 
-## 📂 Dataset  
+## Dataset  
 The dataset contains details about Netflix Movies and TV Shows:  
 - Show ID  
 - Type (Movie / TV Show)  
@@ -31,7 +31,7 @@ The dataset contains details about Netflix Movies and TV Shows:
 
 ---
 
-## ❓ Business Problems Solved  
+## Business Problems Solved  
 
 Here are some of the key SQL queries included:  
 
@@ -56,7 +56,7 @@ content as 'Good'. Count how many items fall into each category.
 
 ---
 
-## 📜 Example Queries  
+## Example Queries  
 
 ### 🔹 1. Count Movies vs TV Shows
 ```sql
