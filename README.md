@@ -58,26 +58,52 @@ content as 'Good'. Count how many items fall into each category.
 
 ## Example Queries  
 
-### 🔹 Count Movies vs TV Shows
+### Find the most common rating for movies and TV shows
 ```sql
-SELECT type, COUNT(show_id) AS Count
-FROM netflix
-GROUP BY type;
-```sql
+SELECT
+    type,
+    rating
+FROM
+    (
+        SELECT 
+            type, 
+            rating, 
+            COUNT(*) AS rating_count,
+            RANK() OVER (PARTITION BY type ORDER BY COUNT(*) DESC) AS common_rating
+        FROM netflix
+        GROUP BY type, rating
+    ) AS table1
+WHERE table1.common_rating = 1
+```
 
-### 🔹 Categorize the content based on the presence of the keywords 'kill' and 'violence' in 
-the description field. Label content containing these keywords as 'Bad' and all other 
-content as 'Good'. Count how many items fall into each category
+### Categorize Content Based on the Presence of 'Kill' and 'Violence' Keywords 
+```sql
+WITH new_table AS (
+    SELECT 
+        *,
+        CASE
+            WHEN description ILIKE '%kill%' OR description ILIKE '%violence%' THEN 'bad content'
+            ELSE 'good content'
+        END AS category
+    FROM netflix
+)
+select category, count(*) from new_table group by category
+```
+
+### Find each year and the average numbers of content release in India on netflix. 
+
 ```sql
 SELECT 
-  CASE
-    WHEN description like '%kill%' or description like '%voilence%' THEN 'bad'
-    ELSE 'good'
-  END AS goodorbad,
-  count(*) as movie_count
+    release_year,
+    COUNT(*) AS yearly_content,
+    ROUND(
+        COUNT(*)::NUMERIC / 
+        (SELECT COUNT(*) FROM netflix WHERE country ILIKE '%India%')::NUMERIC * 100, 
+        2
+    ) AS average_content_percentage
 FROM netflix
-group by goodorbad;
-
-select count(*) from netflix where goodorbad = 'bad'
-```sql
-
+WHERE country ILIKE '%India%'
+GROUP BY release_year
+ORDER BY yearly_content DESC
+LIMIT 5;
+```
