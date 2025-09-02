@@ -1,3 +1,3 @@
 # Netflix Data Analysis using PostgreSQL
 
-[netflix_logo]{}
+![Netflix SQL Project]()
